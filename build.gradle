@@ -1,0 +1,86 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Dependensi JUnit
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    testImplementation 'org.junit.vintage:junit-vintage-engine:5.7.2'
+
+    // Dependensi Cucumber
+    implementation group: 'io.cucumber', name: 'cucumber-java', version: '7.12.0'
+    testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: '7.12.0'
+
+    // Dependensi Rest Assured
+    testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '5.3.0'
+    testImplementation group: 'org.json', name: 'json', version: '20220924'
+    testImplementation 'io.rest-assured:json-path:5.3.0'
+    testImplementation 'io.rest-assured:json-schema-validator:5.3.0'
+
+    // Dependensi AssertJ
+    testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.24.0'
+
+    // Dependensi Selenium
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.17.0'
+
+    // Dependensi Javafaker
+    implementation 'com.github.javafaker:javafaker:0.15'
+
+    // Dependensi tambahan untuk integrasi Qase.io
+    implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
+}
+
+
+test {
+    useJUnitPlatform()
+    systemProperty ("cucumber.filter.tags",System.getProperty("cucumber.filter.tags"))
+}
+
+configurations {
+    cucumberRuntime{
+        extendsFrom testImplementation
+    }
+}
+
+// ./gradlew apiTest
+// ./gradlew webTest
+tasks.register('apiTest') {
+    dependsOn assemble, testClasses
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = [
+                    '--plugin', 'pretty',
+                    '--plugin', 'html:reports/cucumber-api-report.html',
+                    '--glue', 'stepdef',
+                    '--tags', "@api",
+                    'src/test/java/features']
+        }
+    }
+}
+
+tasks.register('webTest') {
+    dependsOn assemble, testClasses
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = [
+                    '--plugin', 'pretty',
+                    '--plugin', 'html:reports/cucumber-web-report.html',
+                    '--glue', 'stepdef',
+                    '--tags', "@web",
+                    'src/test/java/features']
+        }
+    }
+}
