@@ -68,11 +68,11 @@ public class ApiPage {
         List<Object> gender = res.jsonPath().getList("gender");
         List<Object> status = res.jsonPath().getList("status");
 
-        Assertions.assertThat(id.getFirst()).isNotNull();
-        Assertions.assertThat(name.getFirst()).isNotNull();
-        Assertions.assertThat(email.getFirst()).isNotNull();
-        Assertions.assertThat(gender.getFirst()).isIn("female", "male");
-        Assertions.assertThat(status.getFirst()).isIn("active", "inactive");
+        assertThat(id.get(0)).isNotNull();
+        assertThat(name.get(0)).isNotNull();
+        assertThat(email.get(0)).isNotNull();
+        assertThat(gender.get(0)).isIn("female", "male");
+        assertThat(status.get(0)).isIn("active", "inactive");
     }
 
     public void validationResponseJsonWithJSONSchema(String fileName){
