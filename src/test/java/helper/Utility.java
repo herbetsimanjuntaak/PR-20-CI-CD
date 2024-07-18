@@ -28,7 +28,7 @@ public class Utility {
 
         ChromeOptions options = new ChromeOptions();
         //untuk tidak menampilkan browser
-        options.addArguments("--headless");
+//        options.addArguments("--headless");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--remote-allow-origins=*");

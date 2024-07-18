@@ -15,7 +15,7 @@ public class WebPage {
     By input_password = By.id("loginpassword");
     By button_login_new = By.xpath("//button[@onclick='logIn()']");
     By productTitle = By.xpath("//*[text() = 'Welcome herbet']");
-    By button_logout = By.xpath("logout2");
+    By button_logout = By.id("logout2");
 
 
     public void isOnLoginPage(){
@@ -42,6 +42,14 @@ public class WebPage {
         System.out.println("hello");
         System.out.println(productElement.getText());
         assertEquals("Welcome herbet", productElement.getText());
+    }
+
+    public void validateErrorAppear(String errorMessage) {
+//        assertTrue(driver.getPageSource().contains(errorMessage));
+    }
+
+    public void clickButtonLogOut() {
+        driver.findElement(button_logout).click();
     }
 
 }

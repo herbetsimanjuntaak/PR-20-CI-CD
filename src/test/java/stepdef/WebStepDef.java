@@ -44,4 +44,14 @@ public class WebStepDef {
     public void userIsOnHomepage() {
         webPage.isOnHomepage();
     }
+
+    @Then("user will see popup message {string}")
+    public void userWillSeePopupMessage(String message) {
+        webPage.validateErrorAppear(message);
+    }
+
+    @When("user click button Log Out")
+    public void userClickButtonLogOut() {
+        webPage.clickButtonLogOut();
+    }
 }
